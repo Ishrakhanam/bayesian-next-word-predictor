@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bayesian Next Word Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand-icon">B</div>
+          <div>
+            <p class="eyebrow">NLP SYSTEM</p>
+            <h2>BayesFlow</h2>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Sidebar navigation">
+          <button class="nav-item active" type="button" data-page="predictor" aria-current="page">
+            <span class="nav-icon">◌</span>
+            <span>Predictor</span>
+          </button>
+          <button class="nav-item" type="button" data-page="corpus">
+            <span class="nav-icon">◫</span>
+            <span>Corpus</span>
+          </button>
+          <button class="nav-item" type="button" data-page="metrics">
+            <span class="nav-icon">◍</span>
+            <span>Metrics</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p class="tiny-label">MODEL STATE</p>
+          <div class="status-row">
+            <span class="status-dot"></span>
+            <span id="statusLabel">Ready</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow muted">Bayesian next word engine</p>
+            <h1 id="pageTitle">Predictive language assistant</h1>
+          </div>
+          <button id="retrainButton" class="secondary-button" type="button">Retrain model</button>
+        </header>
+
+        <section id="predictorView" class="dashboard-view">
+          <section class="hero-panel">
+            <div class="hero-copy">
+              <span class="pill">Live NLP Prediction</span>
+              <h2>Context-aware Bayesian text generation</h2>
+              <p>
+                Enter a sentence and the model estimates the most probable next word from learned
+                word frequencies, context patterns, and Bayesian posterior probabilities.
+              </p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="mini-stat lavender">
+                <span>Vocabulary</span>
+                <strong id="vocabSize">0</strong>
+              </article>
+              <article class="mini-stat mint">
+                <span>Tokens</span>
+                <strong id="tokenCount">0</strong>
+              </article>
+              <article class="mini-stat pink">
+                <span>Context</span>
+                <strong id="contextWindow">0</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="content-grid">
+            <div class="card input-card">
+              <div class="card-header">
+                <h3>Input text</h3>
+                <span class="badge">Real-time</span>
+              </div>
+              <label class="sr-only" for="textInput">Sentence input</label>
+              <textarea id="textInput" rows="6" placeholder="Type a sentence like: I am going to..."></textarea>
+            </div>
+
+            <div class="card prediction-card">
+              <div class="card-header">
+                <h3>Predicted next words</h3>
+                <span id="predictionCount" class="badge subtle">0 results</span>
+              </div>
+              <div id="predictions" class="predictions" aria-live="polite"></div>
+            </div>
+          </section>
+        </section>
+
+        <section id="corpusView" class="dashboard-view" hidden>
+          <article class="card">
+            <div class="card-header">
+              <h3>Local training corpus</h3>
+              <span id="corpusCount" class="badge subtle">Loading</span>
+            </div>
+            <p class="section-description">
+              These local sentences provide the vocabulary and context examples used by the predictor.
+            </p>
+            <pre id="corpusText" class="corpus-text" aria-live="polite"></pre>
+          </article>
+        </section>
+
+        <section id="metricsView" class="dashboard-view" hidden>
+          <article class="card">
+            <div class="card-header">
+              <h3>Held-out model evaluation</h3>
+              <span class="badge">Deterministic 80/20 split</span>
+            </div>
+            <p class="section-description">
+              Accuracy is measured on sentences excluded from model fitting. Each test sentence is
+              evaluated using its preceding words as context.
+            </p>
+            <div class="stats-grid metrics-grid">
+              <article class="mini-stat lavender">
+                <span>Top-1 accuracy</span>
+                <strong id="top1Accuracy">--</strong>
+              </article>
+              <article class="mini-stat mint">
+                <span>Top-5 accuracy</span>
+                <strong id="top5Accuracy">--</strong>
+              </article>
+              <article class="mini-stat pink">
+                <span>Test predictions</span>
+                <strong id="evaluatedExamples">--</strong>
+              </article>
+            </div>
+            <p id="evaluationDetails" class="section-description evaluation-details"></p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>
